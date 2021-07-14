@@ -2,12 +2,11 @@ import * as React from 'react';
 import { styled } from '@stitches/react';
 import CustomerSelector from './Selectors/Customer';
 import { useGate, useStore } from 'effector-react';
-import { $order, $originalOrder, OrderEditorGate } from './store';
+import { $editorMode, $order, $originalOrder, editorModeChanged, EditorModes, OrderEditorGate } from './store';
 import Department from './Selectors/Department';
 import Location from './Selectors/Location';
-import PeriodStart from './Selectors/PeriodStart';
 import ShiftsGroups from './ShiftsGroupEditor/ShiftsGroupsForm';
-import PeriodEnd from './Selectors/PeriodEnd';
+import PeriodEditorForm from './PeriodEditor/PeriodEditorForm';
 
 const Container = styled('form', {
     display: 'flex',
@@ -50,15 +49,12 @@ const InputWrapper = styled('div', {
     height: '48px'
 });
 
-const ShiftsGroupsWrapper = styled('div', {
-    width: '100%'
-});
-
 const $orderIsLoaded = $originalOrder.map(state => !!state);
 
 const Form = (): JSX.Element => {
     useGate(OrderEditorGate);
     const orderIsLoaded = useStore($orderIsLoaded);
+    const editorMode = useStore($editorMode);
 
     if (!orderIsLoaded) {
         return (
@@ -94,13 +90,35 @@ const Form = (): JSX.Element => {
                 </InputWrapper>
             </InputsWrapper>
 
-            <ShiftsGroupsWrapper>
-                <h3>Shift groups editor</h3>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <div style={{ paddingRight: '24px' }}>
+                    <label htmlFor="mode_shifts">Shifts</label>
+                    <input type="radio" value="shifts" name="edit_mode" id="mode_shifts" checked={ editorMode === EditorModes.shifts }
+                        onChange={ () => editorModeChanged(EditorModes.shifts) }
+                    />
+                </div>
 
-                <ShiftsGroups />
-            </ShiftsGroupsWrapper>
+                <div>
+                    <label htmlFor="mode_period">Period</label>
+                    <input type="radio" value="shifts" name="edit_mode" id="mode_period" checked={ editorMode === EditorModes.period }
+                        onChange={ () => editorModeChanged(EditorModes.period) }
+                    />
+                </div>
+            </div>
 
-            <div>
+            {
+                editorMode === EditorModes.shifts
+                    ? <ShiftsGroups/>
+                    : null
+            }
+
+            {
+                editorMode === EditorModes.period
+                    ? <PeriodEditorForm />
+                    : null
+            }
+
+            <div style={{ padding: '32px 0' }}>
                 <button type="submit">Submit</button>
             </div>
         </Container>
