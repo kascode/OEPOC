@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useStore } from 'effector-react';
 import { createEvent, createStore } from 'effector-logger';
 import { OrderDetailsForEditor } from '../helpers';
-import { PeriodDates } from '../store';
+import { PeriodDates } from '../domain/Period';
 
 const dateChanged = createEvent<string>('period_end_changed');
 const dateChangedFromOriginalOrder = createEvent<OrderDetailsForEditor>('period_end_changed_from_order');

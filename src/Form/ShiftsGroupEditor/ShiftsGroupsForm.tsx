@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { $shiftsGroupsList } from './shiftsGroups';
+import { $shiftsGroupsList } from './model';
 import { useList } from 'effector-react';
 import ShiftsGroup from './ShiftsGroup';
 import OrderContentEditorWrapper from '../OrderContentEditorWrapper';

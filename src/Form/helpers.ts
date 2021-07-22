@@ -1,5 +1,5 @@
-import { ShiftsGroup } from './types';
-import { PeriodDates } from './store';
+import { PeriodDates } from "./domain/Period";
+import { ShiftsGroup } from "./domain/ShiftsGroup";
 
 const getPeriodDatesFromShiftsGroup = (shiftsGroup: ShiftsGroup): PeriodDates | undefined => {
     const {
@@ -72,7 +72,7 @@ export interface OrderDetailsForEditor {
     // period: Period | null;
     // role: string | null;
     // contactPerson: ContactPerson | null;
-    // informationForCandidates: string | null;
+    informationForCandidates: string | null;
 }
 
 export const customers = [
@@ -87,11 +87,11 @@ export const dummyRequest: OrderDetailsForEditor = {
     // 'id': '9d24588f-6d79-4c3a-9cff-8b42b0eac2bc',
     'customer': 'Västra Götalandsregion',
     'department': 'Bemanningsenhet',
-    // 'informationForCandidates': 'Some info',
+    'informationForCandidates': 'Some info',
     'periodStart': '2021-05-30T22:00:00Z',
     'periodEnd': '2021-08-29T21:59:59Z',
     // 'role': 'Allmänsjuksköterska',
     // 'deadline': null,
-    'location': 'Västra Götaland'
+    'location': 'Jokkmakarokk'
 };
 

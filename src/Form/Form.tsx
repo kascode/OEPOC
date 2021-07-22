@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { styled } from '@stitches/react';
-import CustomerSelector from './Selectors/Customer';
-import { useGate, useStore } from 'effector-react';
-import { $editorMode, $order, $originalOrder, editorModeChanged, EditorModes, OrderEditorGate } from './store';
-import Department from './Selectors/Department';
-import Location from './Selectors/Location';
+import CustomerSelector from './Selectors/Customers/Customer';
+import { createGate, useGate, useStore } from 'effector-react';
+import { $editorMode, $periodEnabled, editorModeChanged, EditorModes } from './model';
+import Department from './Selectors/Department/Department';
+import Location from './Selectors/Location/Location';
 import ShiftsGroups from './ShiftsGroupEditor/ShiftsGroupsForm';
 import PeriodEditorForm from './PeriodEditor/PeriodEditorForm';
+import { $sendingOrder, sendOrder } from './model/order';
+import { $originalOrder } from './model/originalOrder';
+import InformationForCandidates from './Selectors/InformationForCandidates';
+
+export const OrderEditorGate = createGate();
 
 const Container = styled('form', {
     display: 'flex',
@@ -55,6 +60,8 @@ const Form = (): JSX.Element => {
     useGate(OrderEditorGate);
     const orderIsLoaded = useStore($orderIsLoaded);
     const editorMode = useStore($editorMode);
+    const periodEnabled = useStore($periodEnabled);
+    const sendingOrder = useStore($sendingOrder);
 
     if (!orderIsLoaded) {
         return (
@@ -68,7 +75,8 @@ const Form = (): JSX.Element => {
         <Container onSubmit={ (e) => {
             e.preventDefault();
 
-            console.log($order.getState());
+            console.log('bum');
+            sendOrder();
         } }>
             <h2>Edit order</h2>
 
@@ -86,7 +94,7 @@ const Form = (): JSX.Element => {
                 </InputWrapper>
 
                 <InputWrapper className="Info">
-                    <h3>info</h3>
+                    <InformationForCandidates />
                 </InputWrapper>
             </InputsWrapper>
 
@@ -100,7 +108,12 @@ const Form = (): JSX.Element => {
 
                 <div>
                     <label htmlFor="mode_period">Period</label>
-                    <input type="radio" value="shifts" name="edit_mode" id="mode_period" checked={ editorMode === EditorModes.period }
+                    <input type="radio"
+                           value="shifts"
+                           name="edit_mode"
+                           id="mode_period"
+                           checked={ editorMode === EditorModes.period }
+                           disabled={ !periodEnabled }
                         onChange={ () => editorModeChanged(EditorModes.period) }
                     />
                 </div>
@@ -120,6 +133,8 @@ const Form = (): JSX.Element => {
 
             <div style={{ padding: '32px 0' }}>
                 <button type="submit">Submit</button>
+
+                { sendingOrder ? <p>Sending...</p> : null }
             </div>
         </Container>
     );

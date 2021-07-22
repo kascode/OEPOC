@@ -3,12 +3,12 @@ import { useStore } from 'effector-react';
 import {
     $shiftsGroupsList,
     daytimeChanged,
-    daytimes,
     finishChanged,
     shiftsListAdded,
     startChanged
-} from './shiftsGroups';
+} from './model';
 import { styled } from '@stitches/react';
+import { daytimes } from '../domain/ShiftsGroup';
 
 const Container = styled('div', {
     display: 'flex',

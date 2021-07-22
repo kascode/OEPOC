@@ -1,3 +1,5 @@
+export const UNDETECTED = 'Undetected';
+
 export interface CounterOfStatuses {
     sent?: number | null;
     accepted?: number | null;
@@ -282,30 +284,4 @@ export enum ShiftTag {
     midday = 'Evening',
     night = 'Night',
     none = 'Not set'
-}
-
-export interface OverlappedShift {
-    shiftId: string;
-}
-
-export type OverlappingRequestResult = OverlappedShift[];
-
-export interface OverlappingShiftsRequest {
-    requestId: string;
-    candidateId: string;
-    shiftsIds: string[];
-}
-
-export interface GroupShift {
-    date: Date;
-    count: number;
-}
-
-export interface ShiftsGroup {
-    id: string | null;
-    daytime: string;
-    finish: string;
-    isNew: boolean;
-    shiftsList: Array<GroupShift>;
-    start: string;
 }

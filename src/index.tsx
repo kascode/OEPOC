@@ -5,6 +5,8 @@ import 'antd/dist/antd.css';
 
 import Form from './Form/Form';
 
+import './model/init';
+
 const Application: React.FC<{}> = () => (
     <>
         <h1 style={{ padding: '1em', textAlign: 'center' }}>Try Effector.js</h1>

@@ -1,26 +1,5 @@
 import { createEvent, createStore } from 'effector-logger';
-import { GroupShift, ShiftsGroup } from '../types';
-import { nanoid } from 'nanoid';
-
-export const daytimes = [ 'day', 'evening', 'night' ];
-
-const defaultShiftsGroup: ShiftsGroup = {
-    id: null,
-    daytime: daytimes[0],
-    start: '10:00',
-    finish: '18:00',
-    isNew: true,
-    shiftsList: []
-};
-
-const createNewGroup = () => ({ ...defaultShiftsGroup, id: nanoid() });
-
-const createResource = (date: string, count: number): GroupShift => ({
-    date: new Date(date),
-    count
-});
-
-const addResource = (resources: GroupShift[], date: string, count: number): GroupShift[] => [ ...resources, createResource(date, count) ];
+import { addResourceToShiftsGroup, createNewGroup, GroupShift, ShiftsGroup } from '../../domain/ShiftsGroup';
 
 const newGroupAdded = createEvent('new_shifts_group_added');
 
@@ -63,7 +42,7 @@ const $shiftsGroupsList = createStore<ShiftsGroup[]>([ createNewGroup() ])
     )))
     .on(shiftsListAdded, (state, { id, date, count }) => state.map(g => (
         g.id === id
-            ? { ...g, shiftsList: addResource(g.shiftsList, date, count) }
+            ? addResourceToShiftsGroup(g, date, count)
             : g
     )));
 
